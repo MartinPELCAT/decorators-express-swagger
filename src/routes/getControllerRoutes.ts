@@ -1,37 +1,37 @@
-import { getRouteMetadataKey } from "..";
 import {
+  getRouteMetadataKey,
   deleteRouteMetadataKey,
   patchRouteMetadataKey,
   postRouteMetadataKey,
   putRouteMetadataKey,
 } from "../metadatas/symbols";
-import { ControllerMetadata } from "../types/ControllerMetadatas";
-import { RouteMetadata } from "../types/RouteMetadata";
+import { ControllerMetadataType } from "../types/ControllerMetadatas";
+import { RouteMetadataType } from "../types/RouteMetadata";
 
 export const getControllerRoutes = (
   target: Function
 ): Pick<
-  ControllerMetadata,
+  ControllerMetadataType,
   "getRoutes" | "deleteRoutes" | "putRoutes" | "postRoutes" | "patchRoutes"
 > => {
-  const getRoutes: RouteMetadata[] = Reflect.getOwnMetadata(
+  const getRoutes: RouteMetadataType[] = Reflect.getOwnMetadata(
     getRouteMetadataKey,
     target
   );
-  const postRoutes: RouteMetadata[] = Reflect.getOwnMetadata(
+  const postRoutes: RouteMetadataType[] = Reflect.getOwnMetadata(
     postRouteMetadataKey,
     target
   );
-  const deleteRoutes: RouteMetadata[] = Reflect.getOwnMetadata(
+  const deleteRoutes: RouteMetadataType[] = Reflect.getOwnMetadata(
     deleteRouteMetadataKey,
     target
   );
 
-  const patchRoutes: RouteMetadata[] = Reflect.getOwnMetadata(
+  const patchRoutes: RouteMetadataType[] = Reflect.getOwnMetadata(
     patchRouteMetadataKey,
     target
   );
-  const putRoutes: RouteMetadata[] = Reflect.getOwnMetadata(
+  const putRoutes: RouteMetadataType[] = Reflect.getOwnMetadata(
     putRouteMetadataKey,
     target
   );

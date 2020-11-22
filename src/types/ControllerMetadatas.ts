@@ -1,6 +1,6 @@
-import { RouteMetadata } from "./RouteMetadata";
+import { RouteMetadataType } from "./RouteMetadata";
 
-export type ControllerMetadata = {
+export interface ControllerMetadataType {
   /**
    * @description Base url of all the routes defined in the controller
    */
@@ -9,25 +9,25 @@ export type ControllerMetadata = {
   /**
    * @description All routes with "GET" Methode
    */
-  getRoutes?: RouteMetadata[];
+  getRoutes?: RouteMetadataType[];
 
   /**
    * @description All routes with "POST" Methode
    */
-  postRoutes?: RouteMetadata[];
+  postRoutes?: RouteMetadataType[];
 
   /**
    * @description All routes with "DELETE" Methode
    */
-  deleteRoutes?: RouteMetadata[];
+  deleteRoutes?: RouteMetadataType[];
 
   /**
    * @description All routes with "PUT" Methode
    */
-  putRoutes?: RouteMetadata[];
+  putRoutes?: RouteMetadataType[];
 
   /**
    * @description All routes with "PATCH" Methode
    */
-  patchRoutes?: RouteMetadata[];
-};
+  patchRoutes?: RouteMetadataType[];
+}

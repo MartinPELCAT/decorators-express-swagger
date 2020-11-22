@@ -9,3 +9,5 @@ export * from "./decorators/ResponseField";
 export * from "./decorators/Route";
 
 export * from "./metadatas/symbols";
+
+export { Service } from "typedi";

@@ -1,4 +1,4 @@
-export type RouteMetadata = {
+export interface RouteMetadataType {
   /**
    * @description The url
    */
@@ -8,4 +8,4 @@ export type RouteMetadata = {
    * @description The methode name
    */
   key: string;
-};
+}

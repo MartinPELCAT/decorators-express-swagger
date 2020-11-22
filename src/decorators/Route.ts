@@ -6,7 +6,7 @@ import {
   postRouteMetadataKey,
   putRouteMetadataKey,
 } from "../metadatas/symbols";
-import { RouteMetadata } from "../types/RouteMetadata";
+import { RouteMetadataType } from "../types/RouteMetadata";
 
 export const Get = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {
@@ -56,9 +56,10 @@ export const Delete = (endpointUrl: string): MethodDecorator => {
 const applyRouteMetadata = (
   target: Function,
   symbol: Symbol,
-  routeMeta: RouteMetadata
+  routeMeta: RouteMetadataType
 ) => {
-  const routes: RouteMetadata[] = Reflect.getOwnMetadata(symbol, target) || [];
+  const routes: RouteMetadataType[] =
+    Reflect.getOwnMetadata(symbol, target) || [];
   routes.push(routeMeta);
   Reflect.defineMetadata(symbol, routes, target);
 };
