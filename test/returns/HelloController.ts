@@ -1,5 +1,4 @@
-import { Response } from "../../src/decorators/Response";
-import { ResponseField } from "../../src/decorators/ResponseField";
+import { ResponseField, Response } from "../../src";
 
 @Response
 export class HelloResponse {

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { controllerMetadataKey, getRouteMetadataKey } from "../metadatas";
+import { controllerMetadataKey } from "../metadatas/symbols";
+import { ControllerMetadata } from "../types/ControllerMetadatas";
 
 interface BuildApiOptions {
   baseUrl?: string;
@@ -14,21 +15,13 @@ interface BuildApiObject {
   router: Router;
 }
 
-export const BuildApi = ({
-  baseUrl = "/api",
-  generateDocs = true,
-  docsUrl = "/api/docs",
-  controllers = [],
-  services = [],
-  globalMiddleware = [],
-}: Partial<BuildApiOptions>): BuildApiObject => {
+export const BuildApi = (options: BuildApiOptions): BuildApiObject => {
   const router = Router();
-  controllers.forEach((controller) => {
-    const controllerMeta = Reflect.getOwnMetadata(
+  options.controllers.forEach((controller) => {
+    const controllerMeta: ControllerMetadata = Reflect.getOwnMetadata(
       controllerMetadataKey,
       controller
     );
-    console.log(controller);
 
     controllerMeta.getRoutes.forEach((getRoute) => {
       router.get(

@@ -1,31 +1,64 @@
 import "reflect-metadata";
-import { getRouteMetadataKey } from "../metadatas";
+import {
+  deleteRouteMetadataKey,
+  getRouteMetadataKey,
+  patchRouteMetadataKey,
+  postRouteMetadataKey,
+  putRouteMetadataKey,
+} from "../metadatas/symbols";
+import { RouteMetadata } from "../types/RouteMetadata";
 
 export const Get = (endpointUrl: string): MethodDecorator => {
-  return (target, key, descriptor) => {
-    // const test = Reflect.getMetadata("design:returntype", target, key);
-    // console.log(Object.keys(test));
-    // console.log(test);
-
-    const routes =
-      Reflect.getOwnMetadata(getRouteMetadataKey, target.constructor) || [];
-    routes.push({ endpointUrl, key });
-    Reflect.defineMetadata(getRouteMetadataKey, routes, target.constructor);
+  return (target, key) => {
+    applyRouteMetadata(target.constructor, getRouteMetadataKey, {
+      endpointUrl,
+      key: key.toString(),
+    });
   };
 };
 
 export const Post = (endpointUrl: string): MethodDecorator => {
-  return (target, key, descriptor) => {};
+  return (target, key) => {
+    applyRouteMetadata(target.constructor, postRouteMetadataKey, {
+      endpointUrl,
+      key: key.toString(),
+    });
+  };
 };
 
 export const Put = (endpointUrl: string): MethodDecorator => {
-  return (target, key, descriptor) => {};
+  return (target, key) => {
+    applyRouteMetadata(target.constructor, putRouteMetadataKey, {
+      endpointUrl,
+      key: key.toString(),
+    });
+  };
 };
 
 export const Patch = (endpointUrl: string): MethodDecorator => {
-  return (target, key, descriptor) => {};
+  return (target, key) => {
+    applyRouteMetadata(target.constructor, patchRouteMetadataKey, {
+      endpointUrl,
+      key: key.toString(),
+    });
+  };
 };
 
 export const Delete = (endpointUrl: string): MethodDecorator => {
-  return (target, key, descriptor) => {};
+  return (target, key) => {
+    applyRouteMetadata(target.constructor, deleteRouteMetadataKey, {
+      endpointUrl,
+      key: key.toString(),
+    });
+  };
+};
+
+const applyRouteMetadata = (
+  target: Function,
+  symbol: Symbol,
+  routeMeta: RouteMetadata
+) => {
+  const routes: RouteMetadata[] = Reflect.getOwnMetadata(symbol, target) || [];
+  routes.push(routeMeta);
+  Reflect.defineMetadata(symbol, routes, target);
 };

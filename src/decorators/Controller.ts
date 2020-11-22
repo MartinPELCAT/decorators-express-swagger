@@ -1,15 +1,17 @@
 import "reflect-metadata";
-import { controllerMetadataKey, getRouteMetadataKey } from "../metadatas";
+import { controllerMetadataKey } from "../metadatas/symbols";
+import { getControllerRoutes } from "../routes/getControllerRoutes";
+import { ControllerMetadata } from "../types/ControllerMetadatas";
 
-interface ControllerOptions {}
+// interface ControllerOptions {}
 
 export const Controller = (controllerUrl: string): ClassDecorator => {
   return (target) => {
-    const getRoutes = Reflect.getOwnMetadata(getRouteMetadataKey, target);
+    const routes = getControllerRoutes(target);
 
-    const controllerObject = {
+    const controllerObject: ControllerMetadata = {
       controllerUrl,
-      getRoutes,
+      ...routes,
     };
     Reflect.defineMetadata(controllerMetadataKey, controllerObject, target);
   };

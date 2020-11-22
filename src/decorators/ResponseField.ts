@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { responseFieldMetadataKey } from "../metadatas";
+import { responseFieldMetadataKey } from "../metadatas/symbols";
 
 type ResponseFieldOptions = {
   description?: string;

@@ -1,23 +1,19 @@
 import { Controller } from "../../src/decorators/Controller";
 import { Get } from "../../src/decorators/Route";
 import { HelloResponse } from "../returns/HelloController";
-
-class Test {
-  test: string;
-}
+import { Request, Response } from "express";
 
 @Controller("/hello")
 export class HelloController {
   @Get("/")
-  hello(req, res): HelloResponse {
+  hello(_: Request, res: Response): HelloResponse {
     res.send("Hello Controoler");
     return { test: "test" };
   }
 
   @Get("/test")
-  test(req, res): HelloResponse {
+  test(_: Request, res: Response): HelloResponse {
     res.send("Hello Controoler test");
-
     return { test: "test" };
   }
 }
