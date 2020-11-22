@@ -13,10 +13,6 @@ const { router } = BuildAPI({
 
 app.use(router);
 
-app.get("/", (_, res) => {
-  res.send("Hello world");
-});
-
 app.listen(5000, () => {
   console.log("Server started on http://localhost:5000");
 });
