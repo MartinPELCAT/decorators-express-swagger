@@ -1,0 +1,9 @@
+import { NextFunction, Request, Response } from "express";
+
+export type MiddlewareMetadataType = Function;
+
+export type MiddlewareType = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => void;

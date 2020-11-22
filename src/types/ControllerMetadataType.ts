@@ -1,4 +1,4 @@
-import { RouteMetadataType } from "./RouteMetadata";
+import { RouteMetadataType } from "./RouteMetadataType";
 
 export interface ControllerMetadataType {
   /**

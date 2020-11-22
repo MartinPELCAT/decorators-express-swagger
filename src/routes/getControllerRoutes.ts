@@ -5,8 +5,8 @@ import {
   postRouteMetadataKey,
   putRouteMetadataKey,
 } from "../metadatas/symbols";
-import { ControllerMetadataType } from "../types/ControllerMetadatas";
-import { RouteMetadataType } from "../types/RouteMetadata";
+import { ControllerMetadataType } from "../types/ControllerMetadataType";
+import { RouteMetadataType } from "../types/RouteMetadataType";
 
 export const getControllerRoutes = (
   target: Function

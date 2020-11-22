@@ -6,7 +6,7 @@ import {
   postRouteMetadataKey,
   putRouteMetadataKey,
 } from "../metadatas/symbols";
-import { RouteMetadataType } from "../types/RouteMetadata";
+import { RouteMetadataType } from "../types/RouteMetadataType";
 
 export const Get = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {

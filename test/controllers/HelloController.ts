@@ -4,6 +4,9 @@ import { HelloResponse } from "../returns/HelloController";
 import { Request, Response } from "express";
 import { HelloService } from "../services/HelloService";
 import { NewService } from "../services/NewService";
+import { Middlewares } from "../../src";
+import { helloMiddlware } from "../middlewares/helloMiddleware";
+import { testMiddlware } from "../middlewares/testMiddleware";
 
 @Controller("/hello")
 export class HelloController {
@@ -13,6 +16,7 @@ export class HelloController {
   ) {}
 
   @Get("/")
+  @Middlewares([helloMiddlware, testMiddlware])
   hello(_: Request, res: Response): HelloResponse {
     this.helloService.test();
     this.newService.test();
