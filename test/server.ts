@@ -6,6 +6,9 @@ const app = express();
 
 const { router } = BuildApi({
   controllers: [HelloController],
+  auth: () => {
+    return true;
+  },
 });
 
 app.use(router);

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { controllerMetadataKey } from "../metadatas/symbols";
 import { ControllerMetadataType } from "../types/ControllerMetadataType";
 import { generateRoutes } from "../utils/routeUtils";
+import { AuthorizedFunction } from "./Autorized";
 
 interface BuildApiOptions {
   baseUrl?: string;
@@ -10,6 +11,7 @@ interface BuildApiOptions {
   controllers?: Array<any>;
   services?: Array<any>;
   globalMiddleware?: Array<any>;
+  auth?: AuthorizedFunction;
 }
 
 interface BuildApiObject {
@@ -24,7 +26,7 @@ export const BuildApi = (options: BuildApiOptions): BuildApiObject => {
       controller
     );
 
-    generateRoutes(controllerMeta, controller, router);
+    generateRoutes(controllerMeta, controller, router, options.auth);
   });
 
   return { router };
