@@ -33,8 +33,5 @@ export const BuildApi = (options: BuildApiOptions): BuildApiObject => {
     generateRoutes(controllerMeta, controller, router, options);
   });
 
-  console.log(options.baseUrl);
-
-  const endRouter = router.use(options.baseUrl ?? "", router);
-  return { router: endRouter };
+  return { router };
 };
