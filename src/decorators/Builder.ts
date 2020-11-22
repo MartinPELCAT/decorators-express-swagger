@@ -18,7 +18,7 @@ interface BuildApiObject {
   router: Router;
 }
 
-export const BuildApi = (options: BuildApiOptions): BuildApiObject => {
+export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
   const router = Router({ caseSensitive: true });
 
   //Define default values

@@ -1,10 +1,10 @@
 import express from "express";
-import { BuildApi } from "../src/decorators/Builder";
+import { BuildAPI } from "../src/decorators/Builder";
 import { HelloController } from "./controllers/HelloController";
 
 const app = express();
 
-const { router } = BuildApi({
+const { router } = BuildAPI({
   controllers: [HelloController],
   auth: () => {
     return true;
