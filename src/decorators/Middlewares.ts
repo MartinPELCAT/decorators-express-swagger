@@ -14,11 +14,12 @@ export const Middlewares = (
 ): MethodDecorator => {
   return (target, key) => {
     const ownMiddleware: MiddlewareMetadataType[] =
-      Reflect.getOwnMetadata(middlewareMetadataKey, target) || [];
+      Reflect.getOwnMetadata(middlewareMetadataKey, target.constructor, key) ||
+      [];
 
     Reflect.defineMetadata(
       middlewareMetadataKey,
-      [...ownMiddleware, ...[middlewares]],
+      [...[middlewares], ...ownMiddleware],
       target.constructor,
       key
     );

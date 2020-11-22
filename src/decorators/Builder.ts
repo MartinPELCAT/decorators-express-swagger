@@ -1,11 +1,7 @@
 import { Router } from "express";
-import Container from "typedi";
-import {
-  controllerMetadataKey,
-  middlewareMetadataKey,
-} from "../metadatas/symbols";
+import { controllerMetadataKey } from "../metadatas/symbols";
 import { ControllerMetadataType } from "../types/ControllerMetadataType";
-import { MiddlewareType } from "../types/MiddlewareType";
+import { generateRoutes } from "../utils/routeUtils";
 
 interface BuildApiOptions {
   baseUrl?: string;
@@ -28,22 +24,7 @@ export const BuildApi = (options: BuildApiOptions): BuildApiObject => {
       controller
     );
 
-    controllerMeta.getRoutes.forEach((getRoute) => {
-      const middlewares: MiddlewareType[] =
-        Reflect.getOwnMetadata(
-          middlewareMetadataKey,
-          controller,
-          getRoute.key
-        ) || [];
-
-      router.get(
-        controllerMeta.controllerUrl.concat(getRoute.endpointUrl),
-        middlewares,
-        controller.prototype[getRoute.key].bind(
-          Container.get(controller) // inject services to a controller
-        )
-      );
-    });
+    generateRoutes(controllerMeta, controller, router);
   });
 
   return { router };

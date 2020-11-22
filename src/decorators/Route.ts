@@ -1,16 +1,11 @@
 import "reflect-metadata";
-import {
-  deleteRouteMetadataKey,
-  getRouteMetadataKey,
-  patchRouteMetadataKey,
-  postRouteMetadataKey,
-  putRouteMetadataKey,
-} from "../metadatas/symbols";
+import { routeMetadataKey } from "../metadatas/symbols";
 import { RouteMetadataType } from "../types/RouteMetadataType";
 
 export const Get = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {
-    applyRouteMetadata(target.constructor, getRouteMetadataKey, {
+    applyRouteMetadata(target.constructor, {
+      method: "GET",
       endpointUrl,
       key: key.toString(),
     });
@@ -19,7 +14,8 @@ export const Get = (endpointUrl: string): MethodDecorator => {
 
 export const Post = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {
-    applyRouteMetadata(target.constructor, postRouteMetadataKey, {
+    applyRouteMetadata(target.constructor, {
+      method: "POST",
       endpointUrl,
       key: key.toString(),
     });
@@ -28,7 +24,8 @@ export const Post = (endpointUrl: string): MethodDecorator => {
 
 export const Put = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {
-    applyRouteMetadata(target.constructor, putRouteMetadataKey, {
+    applyRouteMetadata(target.constructor, {
+      method: "PUT",
       endpointUrl,
       key: key.toString(),
     });
@@ -37,7 +34,8 @@ export const Put = (endpointUrl: string): MethodDecorator => {
 
 export const Patch = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {
-    applyRouteMetadata(target.constructor, patchRouteMetadataKey, {
+    applyRouteMetadata(target.constructor, {
+      method: "PATCH",
       endpointUrl,
       key: key.toString(),
     });
@@ -46,20 +44,17 @@ export const Patch = (endpointUrl: string): MethodDecorator => {
 
 export const Delete = (endpointUrl: string): MethodDecorator => {
   return (target, key) => {
-    applyRouteMetadata(target.constructor, deleteRouteMetadataKey, {
+    applyRouteMetadata(target.constructor, {
+      method: "DELETE",
       endpointUrl,
       key: key.toString(),
     });
   };
 };
 
-const applyRouteMetadata = (
-  target: Function,
-  symbol: Symbol,
-  routeMeta: RouteMetadataType
-) => {
+const applyRouteMetadata = (target: Function, routeMeta: RouteMetadataType) => {
   const routes: RouteMetadataType[] =
-    Reflect.getOwnMetadata(symbol, target) || [];
+    Reflect.getOwnMetadata(routeMetadataKey, target) || [];
   routes.push(routeMeta);
-  Reflect.defineMetadata(symbol, routes, target);
+  Reflect.defineMetadata(routeMetadataKey, routes, target);
 };

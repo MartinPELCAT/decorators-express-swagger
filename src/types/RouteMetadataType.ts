@@ -1,4 +1,11 @@
+import { HTTPMethod } from "./HttpMethods";
+
 export interface RouteMetadataType {
+  /**
+   * @description Http Method
+   */
+  method: HTTPMethod;
+
   /**
    * @description The url
    */

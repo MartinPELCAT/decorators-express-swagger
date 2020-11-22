@@ -1,5 +1,5 @@
 import { Controller } from "../../src/decorators/Controller";
-import { Get } from "../../src/decorators/Route";
+import { Get, Post } from "../../src/decorators/Route";
 import { HelloResponse } from "../returns/HelloController";
 import { Request, Response } from "express";
 import { HelloService } from "../services/HelloService";
@@ -16,7 +16,8 @@ export class HelloController {
   ) {}
 
   @Get("/")
-  @Middlewares([helloMiddlware, testMiddlware])
+  @Middlewares([testMiddlware])
+  @Middlewares(helloMiddlware)
   hello(_: Request, res: Response): HelloResponse {
     this.helloService.test();
     this.newService.test();
@@ -24,7 +25,7 @@ export class HelloController {
     return { test: "test" };
   }
 
-  @Get("/test")
+  @Post("/test")
   test(_: Request, res: Response): HelloResponse {
     res.send("Hello Controoler test");
     return { test: "test" };

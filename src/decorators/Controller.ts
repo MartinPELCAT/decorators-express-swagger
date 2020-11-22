@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { controllerMetadataKey } from "../metadatas/symbols";
-import { getControllerRoutes } from "../routes/getControllerRoutes";
+import { getControllerRoutes } from "../utils/routeUtils";
 import { ControllerMetadataType } from "../types/ControllerMetadataType";
 
 // interface ControllerOptions {}
