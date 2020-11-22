@@ -1,6 +1,6 @@
 import { Router } from "express";
 import Container from "typedi";
-import { AuthorizedFunction } from "../decorators/Autorized";
+import { BuildApiOptions } from "..";
 import {
   authorizedMetadataKey,
   middlewareMetadataKey,
@@ -25,7 +25,7 @@ export const generateRoutes = (
   { routes, controllerUrl }: ControllerMetadataType,
   controller: any,
   router: Router,
-  auth?: AuthorizedFunction
+  options?: BuildApiOptions
 ) => {
   routes.forEach((route) => {
     const authorized: string[] = Reflect.getOwnMetadata(
@@ -34,12 +34,12 @@ export const generateRoutes = (
       route.key
     );
 
-    if (authorized && !auth)
+    if (authorized && !options.auth)
       throw new Error("Authorized function not provided");
 
-    const auto: MiddlewareType = (req, res, next) => {
+    const authorizedMiddleware: MiddlewareType = (req, res, next) => {
       if (authorized === undefined) next();
-      if (auth(authorized, { req, res })) {
+      if (options.auth(authorized, { req, res })) {
         next();
       } else {
         res.status(403).send({ message: "Operation not authorized" });
@@ -50,27 +50,27 @@ export const generateRoutes = (
       Reflect.getOwnMetadata(middlewareMetadataKey, controller, route.key) ||
       [];
 
-    const url = controllerUrl.concat(route.endpointUrl);
+    const url = options.baseUrl.concat(controllerUrl.concat(route.endpointUrl));
 
     const endPoint = controller.prototype[route.key].bind(
-      Container.get(controller) // inject services to a controller
+      Container.get(controller) // inject services to the controller
     );
 
     switch (route.method) {
       case "GET":
-        router.get(url, auto, middlewares, endPoint);
+        router.get(url, authorizedMiddleware, middlewares, endPoint);
         break;
       case "POST":
-        router.post(url, auto, middlewares, endPoint);
+        router.post(url, authorizedMiddleware, middlewares, endPoint);
         break;
       case "DELETE":
-        router.delete(url, auto, middlewares, endPoint);
+        router.delete(url, authorizedMiddleware, middlewares, endPoint);
         break;
       case "PUT":
-        router.put(url, auto, middlewares, endPoint);
+        router.put(url, authorizedMiddleware, middlewares, endPoint);
         break;
       case "PATCH":
-        router.patch(url, auto, middlewares, endPoint);
+        router.patch(url, authorizedMiddleware, middlewares, endPoint);
         break;
     }
   });
