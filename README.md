@@ -63,3 +63,19 @@ export class HelloService {
   }
 }
 ```
+
+## Middleware
+
+```typescript
+export const helloMiddlware: MiddlewareFunction = (_req, _res, next) => {
+  //Your code
+  next();
+};
+
+export const anotherMiddlware = (aParameter: string) => {
+  return (_req, _res, next): MiddlewareFunction => {
+    //Your code
+    next();
+  };
+};
+```

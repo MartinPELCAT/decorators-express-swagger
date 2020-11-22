@@ -1,13 +1,19 @@
 import "reflect-metadata";
-import { routeMetadataKey } from "../metadatas/symbols";
+import {
+  responseFieldMetadataKey,
+  routeMetadataKey,
+} from "../metadatas/symbols";
 import { RouteMetadataType } from "../types/RouteMetadataType";
 
-export const Get = (endpointUrl: string): MethodDecorator => {
+export const Get = (
+  endpointUrl: string
+  // returnType: () => any
+): MethodDecorator => {
   return (target, key) => {
     applyRouteMetadata(target.constructor, {
       method: "GET",
       endpointUrl,
-      key: key.toString(),
+      key,
     });
   };
 };
@@ -17,7 +23,7 @@ export const Post = (endpointUrl: string): MethodDecorator => {
     applyRouteMetadata(target.constructor, {
       method: "POST",
       endpointUrl,
-      key: key.toString(),
+      key,
     });
   };
 };
@@ -27,7 +33,7 @@ export const Put = (endpointUrl: string): MethodDecorator => {
     applyRouteMetadata(target.constructor, {
       method: "PUT",
       endpointUrl,
-      key: key.toString(),
+      key,
     });
   };
 };
@@ -37,7 +43,7 @@ export const Patch = (endpointUrl: string): MethodDecorator => {
     applyRouteMetadata(target.constructor, {
       method: "PATCH",
       endpointUrl,
-      key: key.toString(),
+      key,
     });
   };
 };
@@ -47,12 +53,23 @@ export const Delete = (endpointUrl: string): MethodDecorator => {
     applyRouteMetadata(target.constructor, {
       method: "DELETE",
       endpointUrl,
-      key: key.toString(),
+      key,
     });
   };
 };
 
 const applyRouteMetadata = (target: Function, routeMeta: RouteMetadataType) => {
+  const returnT: Function = Reflect.getMetadata(
+    "design:returntype",
+    target.prototype,
+    routeMeta.key
+  );
+
+  const tmp = Reflect.getOwnMetadata(responseFieldMetadataKey, returnT);
+
+  console.log(returnT);
+  console.log(tmp);
+
   const routes: RouteMetadataType[] =
     Reflect.getOwnMetadata(routeMetadataKey, target) || [];
   routes.push(routeMeta);

@@ -1,7 +1,7 @@
 import { middlewareMetadataKey } from "../metadatas/symbols";
 import {
   MiddlewareMetadataType,
-  MiddlewareType,
+  MiddlewareFunction,
 } from "../types/MiddlewareType";
 
 /**
@@ -10,7 +10,7 @@ import {
  * @
  */
 export const Middlewares = (
-  middlewares: MiddlewareType[] | MiddlewareType
+  middlewares: MiddlewareFunction[] | MiddlewareFunction
 ): MethodDecorator => {
   return (target, key) => {
     const ownMiddleware: MiddlewareMetadataType[] =

@@ -14,5 +14,5 @@ export interface RouteMetadataType {
   /**
    * @description The methode name
    */
-  key: string;
+  key: string | symbol;
 }
