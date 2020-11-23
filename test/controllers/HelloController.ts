@@ -1,14 +1,14 @@
 import { Controller } from "../../src/decorators/Controller";
 import { Get } from "../../src/decorators/Route";
 import { HelloResponse } from "../responses/HelloResponse";
-import { Param } from "../../src/decorators/Param";
+import { Body } from "../../src";
 
 @Controller("/hello")
 export class HelloController {
   @Get("/:id")
-  hello(@Param("id") param: string): HelloResponse {
+  hello(@Body body: any): HelloResponse {
     console.log("Hello controller");
-    console.log(param);
+    console.log(body);
 
     return {
       test: "test",

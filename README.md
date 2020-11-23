@@ -39,7 +39,6 @@ export class HelloController {
     //Your code
     this.helloService.test();
     this.newService.test();
-    res.send("Hello Controoler");
     return { test: "test" };
   }
 
@@ -47,7 +46,6 @@ export class HelloController {
   @Authorized()
   test(_: Request, res: Response): HelloResponse {
     //Your code
-    res.send("Hello Controoler test");
     return { test: "test" };
   }
 }
@@ -78,4 +76,102 @@ export const anotherMiddlware = (aParameter: string) => {
     next();
   };
 };
+```
+
+## Body
+
+Server.ts
+
+```typescript
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+```
+
+[ControllerName].ts
+
+```typescript
+@Controller("/hello")
+export class HelloController {
+  @Get("/:id")
+  hello(@Body body: any): HelloResponse {
+    console.log("Hello controller");
+    console.log(body);
+
+    return {
+      test: "test",
+      super: 2,
+      superBool: true,
+      superDate: new Date(),
+    };
+  }
+}
+```
+
+## Context
+
+```typescript
+@Controller("/hello")
+export class HelloController {
+  @Get("/:id")
+  hello(@Ctx { res }: ContextType): HelloResponse {
+    console.log("Hello controller");
+    res.cookie("testCookie", "testCookieVal");
+
+    return {
+      test: "test",
+      super: 2,
+      superBool: true,
+      superDate: new Date(),
+    };
+  }
+}
+```
+
+## Param
+
+API Endpoint : /api/test/:id  
+":id" => @Param("id")
+
+```typescript
+@Controller("/hello")
+export class HelloController {
+  @Get("/:id")
+  hello(@Param("id") param: string): HelloResponse {
+    console.log("Hello controller");
+    console.log(param);
+
+    return {
+      test: "test",
+      super: 2,
+      superBool: true,
+      superDate: new Date(),
+    };
+  }
+}
+```
+
+## Query
+
+API Endpoint: /api/test?hello=world  
+@Query("hello") hello : string  
+hello === "world // true
+
+```typescript
+@Controller("/hello")
+export class HelloController {
+  @Get("/")
+  hello(@Query("hello") param: string): HelloResponse {
+    console.log("Hello controller");
+    console.log(param);
+
+    return {
+      test: "test",
+      super: 2,
+      superBool: true,
+      superDate: new Date(),
+    };
+  }
+}
 ```
