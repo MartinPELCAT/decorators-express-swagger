@@ -12,6 +12,7 @@
     "noImplicitAny": true,
     "allowUnusedLabels": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "outDir": "build"
   }
 }

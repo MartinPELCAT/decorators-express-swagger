@@ -1,4 +1,4 @@
-import { BODY_METADATA_KEY } from "..";
+import { BODY_METADATA_KEY } from "../metadatas/symbols";
 
 /**
  * req.body

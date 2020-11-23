@@ -7,7 +7,9 @@ export * from "./decorators/Middlewares";
 export * from "./decorators/Response";
 export * from "./decorators/ResponseField";
 export * from "./decorators/Route";
-
-export * from "./metadatas/symbols";
+export * from "./decorators/Body";
+export * from "./decorators/Context";
+export * from "./decorators/Param";
+export * from "./decorators/Query";
 
 export { Service } from "typedi";
