@@ -6,7 +6,7 @@ type ResponseFieldOptions = {
   nullable?: boolean;
 };
 
-type MetadataOptions = {
+export type MetadataOptions = {
   key: string | symbol;
   type: string;
 } & ResponseFieldOptions;

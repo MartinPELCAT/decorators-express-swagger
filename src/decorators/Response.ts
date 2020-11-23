@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { MetadataOptions } from "..";
 import { responseFieldMetadataKey } from "../metadatas/symbols";
 
 /**
@@ -9,22 +10,49 @@ export const Response: ClassDecorator = (target) => {
   //   console.log(target);
   const extendedTarget: Function = Object.getPrototypeOf(target); // get estended class
 
-  const metas = Reflect.getOwnMetadata(
-    responseFieldMetadataKey,
-    extendedTarget
-  );
-  console.log(extendedTarget.prototype);
+  collectResponseFields(target, extendedTarget);
 
-  console.log(metas);
+  // const metas = Reflect.getOwnMetadata(
+  //   responseFieldMetadataKey,
+  //   extendedTarget
+  // );
+  // console.log(extendedTarget.prototype);
 
-  const reextendedTarget: Function = Object.getPrototypeOf(extendedTarget);
+  // console.log(metas);
 
-  const metass = Reflect.getOwnMetadata(
-    responseFieldMetadataKey,
-    reextendedTarget
-  );
+  // const reextendedTarget: Function = Object.getPrototypeOf(extendedTarget);
 
-  console.log(metass);
+  // const metass = Reflect.getOwnMetadata(
+  //   responseFieldMetadataKey,
+  //   reextendedTarget
+  // );
+
+  // console.log(metass);
   //   console.log(extendedTarget);
   //   console.log(reextendedTarget);
+};
+
+const collectResponseFields = (
+  baseTarget: Function,
+  currentTarget: Function
+) => {
+  if (currentTarget.prototype) {
+    const metas: Array<MetadataOptions> = Reflect.getOwnMetadata(
+      responseFieldMetadataKey,
+      currentTarget
+    );
+    const nextTarget: Function = Object.getPrototypeOf(currentTarget);
+
+    const existingMetadata: Array<MetadataOptions> =
+      Reflect.getOwnMetadata(responseFieldMetadataKey, baseTarget) || [];
+
+    Reflect.defineMetadata(
+      responseFieldMetadataKey,
+      [...existingMetadata, ...metas],
+      baseTarget
+    );
+    if (nextTarget.prototype) {
+      collectResponseFields(baseTarget, nextTarget);
+    }
+  }
 };

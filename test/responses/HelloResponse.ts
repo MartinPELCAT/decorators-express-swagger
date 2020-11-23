@@ -1,13 +1,18 @@
 import { ResponseField, Response } from "../../src";
 
-export abstract class Oui {
+export abstract class Non {
+  @ResponseField({ description: "++++++" })
+  valueNon?: string;
+}
+
+export abstract class Oui extends Non {
   @ResponseField({ description: "++++++" })
   valueOui?: string;
 }
 
 export class Test extends Oui {
   @ResponseField({ description: "++++++" })
-  valueOui?: string;
+  valueTest?: string;
 }
 
 @Response
