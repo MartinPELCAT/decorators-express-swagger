@@ -12,3 +12,4 @@ export const RESPONSE_FIELD_METADATA_KEY = Symbol("response_field_key");
 export const QUERY_METADATA_KEY = Symbol("query_key");
 export const BODY_METADATA_KEY = Symbol("body_key");
 export const PARAMS_METADATA_KEY = Symbol("params_key");
+export const CTX_METADATA_KEY = Symbol("ctx_key");

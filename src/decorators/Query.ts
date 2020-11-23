@@ -5,12 +5,22 @@
  * hello === "world"
  */
 
-export const Query = (queryParameter: string): ParameterDecorator => () =>
-  //   target,
-  //   key,
-  //   index
-  {
-    console.log(queryParameter);
+import { QUERY_METADATA_KEY } from "../metadatas/symbols";
 
-    //   console.log(target, key, index);
-  };
+export const Query = (queryParameter: string): ParameterDecorator => (
+  target,
+  key,
+  index
+) => {
+  const prevMetadatas =
+    Reflect.getOwnMetadata(QUERY_METADATA_KEY, target.constructor, key) || [];
+
+  prevMetadatas.push({ queryParameter, index });
+
+  Reflect.defineMetadata(
+    QUERY_METADATA_KEY,
+    prevMetadatas,
+    target.constructor,
+    key
+  );
+};

@@ -1,18 +1,19 @@
 import { Controller } from "../../src/decorators/Controller";
 import { Get } from "../../src/decorators/Route";
 import { HelloResponse } from "../responses/HelloResponse";
-import { Request, Response } from "express";
 import { Query } from "../../src/decorators/Query";
 
 @Controller("/hello")
 export class HelloController {
   @Get("/")
   hello(
-    _: Request,
-    res: Response,
-    @Query("hello") _param: string
+    @Query("hello") param: string,
+    @Query("test") test: string
   ): HelloResponse {
-    res.send("Hello Controoler");
+    console.log("Hello controller");
+    console.log(param);
+    console.log(test);
+
     return {
       test: "test",
       super: 2,
