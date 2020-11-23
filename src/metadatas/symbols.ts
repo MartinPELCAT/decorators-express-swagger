@@ -1,11 +1,14 @@
 import "reflect-metadata";
 
-export const routeMetadataKey = Symbol("route_key");
+export const ROUTE_METADATA_KEY = Symbol("route_key");
 
-export const controllerMetadataKey = Symbol("controller_key");
-export const serviceMetadataKey = Symbol("service_key");
-export const middlewareMetadataKey = Symbol("middleware_key");
-export const authorizedMetadataKey = Symbol("authorized_key");
+export const CONTROLLER_METADATA_KEY = Symbol("controller_key");
+export const SERVICE_METADATA_KEY = Symbol("service_key");
+export const MIDDLEWARE_METADATA_KEY = Symbol("middleware_key");
+export const AUTHORIZED_METADATA_KEY = Symbol("authorized_key");
 
-export const responseMetadataKey = Symbol("response_key");
-export const responseFieldMetadataKey = Symbol("response_field_key");
+export const RESPONSE_FIELD_METADATA_KEY = Symbol("response_field_key");
+
+export const QUERY_METADATA_KEY = Symbol("query_key");
+export const BODY_METADATA_KEY = Symbol("body_key");
+export const PARAMS_METADATA_KEY = Symbol("params_key");

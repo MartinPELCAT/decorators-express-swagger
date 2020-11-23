@@ -2,9 +2,9 @@ import { Router } from "express";
 import Container from "typedi";
 import { BuildApiOptions } from "..";
 import {
-  authorizedMetadataKey,
-  middlewareMetadataKey,
-  routeMetadataKey,
+  AUTHORIZED_METADATA_KEY,
+  MIDDLEWARE_METADATA_KEY,
+  ROUTE_METADATA_KEY,
 } from "../metadatas/symbols";
 import { ControllerMetadataType } from "../types/ControllerMetadataType";
 import { MiddlewareFunction } from "../types/MiddlewareType";
@@ -15,7 +15,7 @@ export const getControllerRoutes = (
   target: Function
 ): Pick<ControllerMetadataType, "routes"> => {
   const routes: RouteMetadataType[] = Reflect.getOwnMetadata(
-    routeMetadataKey,
+    ROUTE_METADATA_KEY,
     target
   );
 
@@ -24,13 +24,13 @@ export const getControllerRoutes = (
 
 export const generateRoutes = (
   { routes, controllerUrl }: ControllerMetadataType,
-  controller: any,
+  controller: Function,
   router: Router,
   options?: BuildApiOptions
 ) => {
   routes.forEach((route) => {
     const authorized: string[] = Reflect.getOwnMetadata(
-      authorizedMetadataKey,
+      AUTHORIZED_METADATA_KEY,
       controller,
       route.key
     );
@@ -44,7 +44,7 @@ export const generateRoutes = (
     );
 
     const middlewares: MiddlewareFunction[] =
-      Reflect.getOwnMetadata(middlewareMetadataKey, controller, route.key) ||
+      Reflect.getOwnMetadata(MIDDLEWARE_METADATA_KEY, controller, route.key) ||
       [];
 
     const url = options.baseUrl.concat(controllerUrl.concat(route.endpointUrl));

@@ -1,4 +1,4 @@
-import { middlewareMetadataKey } from "../metadatas/symbols";
+import { MIDDLEWARE_METADATA_KEY } from "../metadatas/symbols";
 import {
   MiddlewareMetadataType,
   MiddlewareFunction,
@@ -14,11 +14,14 @@ export const Middlewares = (
 ): MethodDecorator => {
   return (target, key) => {
     const ownMiddleware: MiddlewareMetadataType[] =
-      Reflect.getOwnMetadata(middlewareMetadataKey, target.constructor, key) ||
-      [];
+      Reflect.getOwnMetadata(
+        MIDDLEWARE_METADATA_KEY,
+        target.constructor,
+        key
+      ) || [];
 
     Reflect.defineMetadata(
-      middlewareMetadataKey,
+      MIDDLEWARE_METADATA_KEY,
       [...[middlewares], ...ownMiddleware],
       target.constructor,
       key

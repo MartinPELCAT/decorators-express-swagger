@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { controllerMetadataKey } from "../metadatas/symbols";
+import { CONTROLLER_METADATA_KEY } from "../metadatas/symbols";
 import { getControllerRoutes } from "../utils/routeUtils";
 import { ControllerMetadataType } from "../types/ControllerMetadataType";
 
@@ -13,6 +13,6 @@ export const Controller = (controllerUrl: string): ClassDecorator => {
       controllerUrl,
       ...routes,
     };
-    Reflect.defineMetadata(controllerMetadataKey, controllerObject, target);
+    Reflect.defineMetadata(CONTROLLER_METADATA_KEY, controllerObject, target);
   };
 };

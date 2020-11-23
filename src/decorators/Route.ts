@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {
-  responseFieldMetadataKey,
-  routeMetadataKey,
+  // responseFieldMetadataKey,
+  ROUTE_METADATA_KEY,
 } from "../metadatas/symbols";
 import { RouteMetadataType } from "../types/RouteMetadataType";
 
@@ -59,19 +59,18 @@ export const Delete = (endpointUrl: string): MethodDecorator => {
 };
 
 const applyRouteMetadata = (target: Function, routeMeta: RouteMetadataType) => {
-  const returnT: Function = Reflect.getMetadata(
-    "design:returntype",
-    target.prototype,
-    routeMeta.key
-  );
+  // const returnT: Function = Reflect.getMetadata(
+  //   "design:returntype",
+  //   target.prototype,
+  //   routeMeta.key
+  // );
 
-  const tmp = Reflect.getOwnMetadata(responseFieldMetadataKey, returnT);
+  // const tmp = Reflect.getOwnMetadata(responseFieldMetadataKey, returnT);
 
-  console.log(returnT);
-  console.log(tmp);
+  // console.log(tmp);
 
   const routes: RouteMetadataType[] =
-    Reflect.getOwnMetadata(routeMetadataKey, target) || [];
+    Reflect.getOwnMetadata(ROUTE_METADATA_KEY, target) || [];
   routes.push(routeMeta);
-  Reflect.defineMetadata(routeMetadataKey, routes, target);
+  Reflect.defineMetadata(ROUTE_METADATA_KEY, routes, target);
 };

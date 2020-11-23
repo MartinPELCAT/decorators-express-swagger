@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { authorizedMetadataKey } from "../metadatas/symbols";
+import { AUTHORIZED_METADATA_KEY } from "../metadatas/symbols";
 
 export type AuthorizedFunction = (
   roles: string[] | null,
@@ -11,7 +11,7 @@ export const Authorized = (
 ): MethodDecorator => {
   return (target, key) => {
     Reflect.defineMetadata(
-      authorizedMetadataKey,
+      AUTHORIZED_METADATA_KEY,
       typeof roles === "string" ? [roles] : roles,
       target.constructor,
       key

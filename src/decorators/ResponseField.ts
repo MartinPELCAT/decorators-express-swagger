@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { responseFieldMetadataKey } from "../metadatas/symbols";
+import { RESPONSE_FIELD_METADATA_KEY } from "../metadatas/symbols";
 
 type ResponseFieldOptions = {
   description?: string;
@@ -17,14 +17,14 @@ export const ResponseField = (
   return (target, key) => {
     const type = Reflect.getMetadata("design:type", target, key);
     const existingMetadata: Array<MetadataOptions> =
-      Reflect.getOwnMetadata(responseFieldMetadataKey, target.constructor) ||
+      Reflect.getOwnMetadata(RESPONSE_FIELD_METADATA_KEY, target.constructor) ||
       [];
     const description = (options && options.description) ?? "";
     const nullable = (options && options.nullable) ?? false;
 
     existingMetadata.push({ key, type: type.name, description, nullable });
     Reflect.defineMetadata(
-      responseFieldMetadataKey,
+      RESPONSE_FIELD_METADATA_KEY,
       existingMetadata,
       target.constructor
     );
