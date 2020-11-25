@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+html(lang="fr")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title=`Route ${route.path}`
+		style 
+			include ../styles/out.css
+	body(class="font-sans antialiased space-y-4 text-gray-800")
+		case route.method
+			when "GET"
+				header(class="p-3 bg-blue-400 shadow-md")
+					span(class="text-xl font-semibold")=`${route.target.name} ${route.path}`
+
+		div(class="container mx-auto space-y-4 flex flex-col")
+

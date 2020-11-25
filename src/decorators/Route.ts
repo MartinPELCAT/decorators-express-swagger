@@ -1,57 +1,103 @@
 import "reflect-metadata";
 import { getAPIMetadataStorage } from "../metadatas/metadataStorage";
+import { Route } from "../metadatas/metadatasTypes";
 
-export const Get = (path: string): MethodDecorator => {
+type RouteOptions = {
+  description: string;
+};
+
+export const Get = (path: string, options?: RouteOptions): MethodDecorator => {
   return (target, key) => {
-    getAPIMetadataStorage().addEndpoint({
-      key: key,
-      target: target.constructor,
-      path,
-      method: "GET",
-    });
+    registerRoute(
+      {
+        key: key,
+        target: target.constructor,
+        path,
+        method: "GET",
+      },
+      options
+    );
   };
 };
 
-export const Post = (path: string): MethodDecorator => {
+export const Post = (path: string, options?: RouteOptions): MethodDecorator => {
   return (target, key) => {
-    getAPIMetadataStorage().addEndpoint({
-      key,
-      target: target.constructor,
-      path,
-      method: "POST",
-    });
+    registerRoute(
+      {
+        key,
+        target: target.constructor,
+        path,
+        method: "POST",
+      },
+      options
+    );
   };
 };
 
-export const Put = (path: string): MethodDecorator => {
+export const Put = (path: string, options?: RouteOptions): MethodDecorator => {
   return (target, key) => {
-    getAPIMetadataStorage().addEndpoint({
-      key: key,
-      target: target.constructor,
-      path,
-      method: "PUT",
-    });
+    registerRoute(
+      {
+        key: key,
+        target: target.constructor,
+        path,
+        method: "PUT",
+      },
+      options
+    );
   };
 };
 
-export const Patch = (path: string): MethodDecorator => {
+export const Patch = (
+  path: string,
+  options?: RouteOptions
+): MethodDecorator => {
   return (target, key) => {
-    getAPIMetadataStorage().addEndpoint({
-      key: key,
-      target: target.constructor,
-      path,
-      method: "PATCH",
-    });
+    registerRoute(
+      {
+        key: key,
+        target: target.constructor,
+        path,
+        method: "PATCH",
+      },
+      options
+    );
   };
 };
 
-export const Delete = (path: string): MethodDecorator => {
+export const Delete = (
+  path: string,
+  options?: RouteOptions
+): MethodDecorator => {
   return (target, key) => {
-    getAPIMetadataStorage().addEndpoint({
-      key: key,
-      target: target.constructor,
-      path,
-      method: "DELETE",
-    });
+    registerRoute(
+      {
+        key: key,
+        target: target.constructor,
+        path,
+        method: "DELETE",
+      },
+      options
+    );
   };
+};
+
+const registerRoute = (
+  {
+    key,
+    target,
+    path,
+    method,
+  }: Pick<Route, "key" | "target" | "path" | "method">,
+  options: RouteOptions
+) => {
+  const description = options && options.description ? options.description : "";
+
+  getAPIMetadataStorage().addEndpoint({
+    key,
+    target,
+    path,
+    method,
+    description,
+  });
 };

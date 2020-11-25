@@ -2,6 +2,7 @@ import express from "express";
 import { BuildAPI } from "../src/decorators/Builder";
 import { UserController } from "./controllers/UserController";
 import bodyParser from "body-parser";
+import { BitokuController } from "./controllers/BitokuController";
 
 const app = express();
 
@@ -9,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const { router } = BuildAPI({
-  controllers: [UserController],
+  controllers: [UserController, BitokuController],
   auth: () => {
     return true;
   },

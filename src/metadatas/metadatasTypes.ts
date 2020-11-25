@@ -7,6 +7,7 @@ export type ParameterType = {
 };
 
 export type Route = {
+  description?: string;
   method?: HTTPMethod;
   target: Function;
   key: string | symbol;
