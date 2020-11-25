@@ -57,6 +57,6 @@ export const generateApiDoc = (router: Router, docUrl: string) => {
   router.get(docUrl.concat("/type/:name"), (req, res) => {
     const type = apiStorage.types.find((typ) => req.params.name === typ.name);
     console.log(type);
-    res.render("./views/index.pug");
+    res.render(join(__dirname, "./views/type.pug"), { type });
   });
 };

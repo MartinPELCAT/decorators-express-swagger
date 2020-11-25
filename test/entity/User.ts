@@ -9,9 +9,15 @@ export interface IUser {
 }
 
 @ObjectType
+class Issou {
+  @Field()
+  issou: string;
+}
+
+@ObjectType
 class Test {
   @Field()
-  testinput: String;
+  testinput: Issou;
 }
 
 abstract class AbstractUser {

@@ -18,7 +18,7 @@ export class BitokuController {
       isActive: true,
       birthDate: new Date(),
       abractUser: "",
-      test: { testinput: "oui" },
+      test: { testinput: { issou: "" } },
     };
   }
 
