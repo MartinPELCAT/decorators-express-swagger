@@ -1,7 +1,4 @@
 import { Router } from "express";
-import { CONTROLLER_METADATA_KEY } from "../metadatas/symbols";
-import { ControllerMetadataType } from "../types/ControllerMetadataType";
-import { generateControllerDoc } from "../utils/controllerDoc";
 import { generateRoutes } from "../utils/routeUtils";
 import { AuthorizedFunction } from "./Autorized";
 
@@ -25,21 +22,7 @@ export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
   options.baseUrl = options.baseUrl ?? "/api";
   options.generateDocs = options.generateDocs ?? true;
 
-  options.controllers.forEach((controller) => {
-    const controllerMeta: ControllerMetadataType = Reflect.getOwnMetadata(
-      CONTROLLER_METADATA_KEY,
-      controller
-    );
-
-    generateRoutes(controllerMeta, controller, router, options);
-
-    if (options.generateDocs) {
-      generateControllerDoc(
-        { controllerMeta, controller },
-        { router, ...options }
-      );
-    }
-  });
+  generateRoutes(router, options);
 
   return { router };
 };

@@ -6,9 +6,9 @@ export function AuthorizedFunction(
   options: BuildApiOptions
 ): MiddlewareFunction {
   return (req, res, next) => {
-    if (authorized === undefined) next();
+    if (authorized === undefined || options.auth === undefined) next();
     if (options.auth(authorized, { req, res })) {
-      next();
+      return next();
     } else {
       res.status(403).send({ message: "Operation not authorized" });
     }

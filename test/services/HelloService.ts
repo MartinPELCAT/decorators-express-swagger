@@ -2,5 +2,7 @@ import { Service } from "../../src";
 
 @Service()
 export class HelloService {
-  test() {}
+  test() {
+    console.log("hello service");
+  }
 }

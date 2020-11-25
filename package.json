@@ -4,7 +4,8 @@
   "description": "Api framework with decorators and documentatin generated",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --watch 'test/**' --ext 'ts,json' --ignore 'test/**/*.spec.ts' --exec 'ts-node test/server.ts'"
+    "dev": "nodemon --watch 'test/**' --ext 'ts,json' --ignore 'test/**/*.spec.ts' --exec 'ts-node test/server.ts'",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
