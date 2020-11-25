@@ -16,7 +16,7 @@ export const generateApiDoc = (router: Router, docUrl: string) => {
         docUrl,
       });
     } else {
-      res.status(404).send();
+      res.status(404).send("Aucun controller trouver");
     }
   });
 
@@ -30,8 +30,6 @@ export const generateApiDoc = (router: Router, docUrl: string) => {
         docUrl,
       });
     } else {
-      console.log("not found");
-
       res.status(404).send("Ce controller n'existe pas");
     }
   });
@@ -49,14 +47,17 @@ export const generateApiDoc = (router: Router, docUrl: string) => {
           docUrl,
         });
       } else {
-        res.status(404).send();
+        res.status(404).send("Cette route n'existe pas dans ce controller");
       }
     }
   );
 
   router.get(docUrl.concat("/type/:name"), (req, res) => {
     const type = apiStorage.types.find((typ) => req.params.name === typ.name);
-    console.log(type);
-    res.render(join(__dirname, "./views/type.pug"), { type });
+    if (type) {
+      res.render(join(__dirname, "./views/type.pug"), { type });
+    } else {
+      res.status(404).send("Ce Type n'existe pas");
+    }
   });
 };
