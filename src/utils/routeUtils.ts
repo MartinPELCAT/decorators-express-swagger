@@ -11,7 +11,7 @@ export const generateRoutes = (router: Router, options?: BuildApiOptions) => {
       if (route.authRoles && !options.auth)
         throw new Error("Authorized function not provided");
 
-      const url = options.baseUrl.concat(controller.baseUrl).concat(route.path);
+      const url = options.apiUrl.concat(controller.baseUrl).concat(route.path);
       const authMiddleware: MiddlewareFunction = AuthorizedFunction(
         Array.isArray(route.authRoles) ? route.authRoles : [route.authRoles],
         options

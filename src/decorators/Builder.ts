@@ -4,7 +4,7 @@ import { generateRoutes } from "../utils/routeUtils";
 import { AuthorizedFunction } from "./Autorized";
 
 export interface BuildApiOptions {
-  baseUrl?: string;
+  apiUrl?: string;
   generateDocs?: boolean;
   docsUrl?: string;
   controllers: Array<Function>;
@@ -13,13 +13,15 @@ export interface BuildApiOptions {
 
 interface BuildApiObject {
   router: Router;
+  docsUrl: string;
+  apiUrl: string;
 }
 
 export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
   const router = Router({ caseSensitive: true });
 
   //Define default values
-  options.baseUrl = options.baseUrl ?? "/api";
+  options.apiUrl = options.apiUrl ?? "/api";
   options.generateDocs = options.generateDocs ?? true;
   options.docsUrl = options.docsUrl ?? "/api/doc";
 
@@ -28,6 +30,6 @@ export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
   if (options.generateDocs) {
     generateApiDoc(router, options.docsUrl);
   }
-
-  return { router };
+  const { docsUrl, apiUrl } = options;
+  return { router, docsUrl, apiUrl };
 };

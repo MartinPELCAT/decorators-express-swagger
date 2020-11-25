@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const { router } = BuildAPI({
+const { router, apiUrl, docsUrl } = BuildAPI({
   controllers: [UserController, BitokuController],
   auth: () => {
     return true;
@@ -19,5 +19,6 @@ const { router } = BuildAPI({
 app.use(router);
 
 app.listen(5000, () => {
-  console.log("Server started on http://localhost:5000");
+  console.log(`Server started on http://localhost:5000${apiUrl}`);
+  console.log(`Doc started on http://localhost:5000${docsUrl}`);
 });
