@@ -6,7 +6,7 @@ import { testMiddlware } from "../middlewares/testMiddleware";
 
 @Controller("/hello")
 export class UserController {
-  @Get("/:id")
+  @Get("/")
   @Middlewares(testMiddlware)
   @Authorized(["Test", "ADMIn"])
   hello(@Body input: UserInput): User {
