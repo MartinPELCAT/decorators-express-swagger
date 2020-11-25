@@ -8,6 +8,12 @@ export interface IUser {
   isActive: boolean;
 }
 
+@ObjectType
+class Test {
+  @Field()
+  testinput: String;
+}
+
 abstract class AbstractUser {
   @Field()
   abractUser: string;
@@ -26,6 +32,9 @@ export class User extends AbstractUser implements IUser {
 
   @Field({ description: "Un test d'une description Bool" })
   isActive: boolean;
+
+  @Field({ nullable: true, description: "Salut a tous" })
+  test: Test;
 }
 
 @Input

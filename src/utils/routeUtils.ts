@@ -8,6 +8,8 @@ import { endpointParameters } from "./endpointParameters";
 export const generateRoutes = (router: Router, options?: BuildApiOptions) => {
   getAPIMetadataStorage().controllers.forEach((controller) => {
     controller.routes.forEach((route) => {
+      console.log(route.responseFields);
+
       if (route.authRoles && !options.auth)
         throw new Error("Authorized function not provided");
 

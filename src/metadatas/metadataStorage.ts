@@ -37,6 +37,20 @@ class MetadataStorage {
       target: route.target,
       key: route.key,
     });
+
+    const returnType: Function = Reflect.getMetadata(
+      "design:returntype",
+      route.target.prototype,
+      route.key
+    );
+    if (returnType) {
+      const responseFields = this.routes[index].responseFields || [];
+      const fields = this.types.find((type) => type.name === returnType.name)
+        .fields;
+      responseFields.push(...fields);
+      this.routes[index].responseFields = responseFields;
+    }
+
     this.routes[index] = { ...this.routes[index], ...route };
   }
 
@@ -82,6 +96,10 @@ class MetadataStorage {
     const routes = this.routes[routeIndex].bodyParam || [];
     routes.push({ index, inputType });
     this.routes[routeIndex].bodyParam = routes;
+    const inputs = this.routes[routeIndex].inputs || [];
+    const fields = this.types.find((type) => type.name === inputType).fields;
+    inputs.push(...fields);
+    this.routes[routeIndex].inputs = inputs;
   }
 
   addContextParam({ target, key }: RouteBasicID, index: number) {
