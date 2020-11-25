@@ -43,12 +43,16 @@ class MetadataStorage {
       route.target.prototype,
       route.key
     );
-    if (returnType) {
+
+    if (returnType && returnType.name !== "Promise") {
       const responseFields = this.routes[index].responseFields || [];
-      const fields = this.types.find((type) => type.name === returnType.name)
-        .fields;
-      responseFields.push(...fields);
-      this.routes[index].responseFields = responseFields;
+
+      const type = this.types.find((type) => type.name === returnType.name);
+      if (type) {
+        const fields = type.fields;
+        responseFields.push(...fields);
+        this.routes[index].responseFields = responseFields;
+      }
     }
 
     this.routes[index] = { ...this.routes[index], ...route };
@@ -97,9 +101,12 @@ class MetadataStorage {
     routes.push({ index, inputType });
     this.routes[routeIndex].bodyParam = routes;
     const inputs = this.routes[routeIndex].inputs || [];
-    const fields = this.types.find((type) => type.name === inputType).fields;
-    inputs.push(...fields);
-    this.routes[routeIndex].inputs = inputs;
+    const type = this.types.find((type) => type.name === inputType);
+    if (type) {
+      const fields = type.fields;
+      inputs.push(...fields);
+      this.routes[routeIndex].inputs = inputs;
+    }
   }
 
   addContextParam({ target, key }: RouteBasicID, index: number) {
