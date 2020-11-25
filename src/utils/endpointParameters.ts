@@ -20,7 +20,7 @@ export function endpointParameters(
   const endPointOverride: MiddlewareFunction = async function (
     req: Request,
     res: Response
-  ) {
+  ): Promise<Response> {
     const args: any[] = [];
 
     queryURLParam?.forEach((query) => {
@@ -39,8 +39,12 @@ export function endpointParameters(
       args[query.index] = { req, res };
     });
 
-    const endpointReturnValue = await endPoint(...args);
-    res.json(endpointReturnValue);
+    try {
+      const endpointReturnValue = await endPoint(...args);
+      return res.json(endpointReturnValue);
+    } catch (error) {
+      res.send(500).json({ message: "Server internal error" });
+    }
   };
   return endPointOverride;
 }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { generateApiDoc } from "../doc/apiDoc";
 import { generateRoutes } from "../utils/routeUtils";
 import { AuthorizedFunction } from "./Autorized";
 
@@ -6,8 +7,7 @@ export interface BuildApiOptions {
   baseUrl?: string;
   generateDocs?: boolean;
   docsUrl?: string;
-  controllers?: Array<Function>;
-  globalMiddleware?: Array<any>;
+  controllers: Array<Function>;
   auth?: AuthorizedFunction;
 }
 
@@ -21,8 +21,13 @@ export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
   //Define default values
   options.baseUrl = options.baseUrl ?? "/api";
   options.generateDocs = options.generateDocs ?? true;
+  options.docsUrl = options.docsUrl ?? "/api/doc";
 
   generateRoutes(router, options);
+
+  if (options.generateDocs) {
+    generateApiDoc(router, options.docsUrl);
+  }
 
   return { router };
 };
