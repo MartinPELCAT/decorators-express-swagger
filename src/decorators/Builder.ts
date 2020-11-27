@@ -6,15 +6,15 @@ import { AuthorizedFunction } from "./Autorized";
 export interface BuildApiOptions {
   apiUrl?: string;
   generateDocs?: boolean;
-  docsUrl?: string;
+  docUrl?: string;
   controllers: Array<Function>;
   auth?: AuthorizedFunction;
 }
 
 interface BuildApiObject {
   router: Router;
-  docsUrl: string;
   apiUrl: string;
+  docUrl: string;
 }
 
 export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
@@ -23,13 +23,14 @@ export const BuildAPI = (options: BuildApiOptions): BuildApiObject => {
   //Define default values
   options.apiUrl = options.apiUrl ?? "/api";
   options.generateDocs = options.generateDocs ?? true;
-  options.docsUrl = options.docsUrl ?? "/api/doc";
+  options.docUrl = options.docUrl ?? "/api/doc";
 
   generateRoutes(router, options);
 
   if (options.generateDocs) {
-    generateApiDoc(router, options.docsUrl);
+    generateApiDoc(router, options.docUrl);
   }
-  const { docsUrl, apiUrl } = options;
-  return { router, docsUrl, apiUrl };
+
+  const { apiUrl, docUrl } = options;
+  return { router, apiUrl, docUrl };
 };

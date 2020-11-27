@@ -1,24 +1,66 @@
 import express from "express";
-import { BuildAPI } from "../src/decorators/Builder";
-import { UserController } from "./controllers/UserController";
 import bodyParser from "body-parser";
-import { BitokuController } from "./controllers/BitokuController";
+import { BuildAPI } from "../src";
+import { seedDatabase } from "./utils/databaseSeed";
+import { connect } from "mongoose";
+import { controllers } from "./controllers";
+import cors from "cors";
+import { verify } from "jsonwebtoken";
+import { JWT_SECRET } from "./config/keys";
 
-const app = express();
+async function main() {
+  try {
+    console.info("Connecting to database...");
+    const conn = await connect("mongodb://localhost/circle-fullstack", {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    });
+    await conn.connection.db.dropDatabase();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+    console.info("Seeding database ...");
+    await seedDatabase();
 
-const { router, apiUrl, docsUrl } = BuildAPI({
-  controllers: [UserController, BitokuController],
-  auth: () => {
-    return true;
-  },
-});
+    const app = express();
 
-app.use(router);
+    app.use(cors());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
 
-app.listen(5000, () => {
-  console.log(`Server started on http://localhost:5000${apiUrl}`);
-  console.log(`Doc started on http://localhost:5000${docsUrl}`);
-});
+    const { router, apiUrl, docUrl } = BuildAPI({
+      controllers,
+      auth: (roles, { req, res }) => {
+        try {
+          const auth = req.headers.authorization;
+          if (!auth) return false;
+          const token = auth.replace("Bearer ", "");
+
+          const decoded = verify(token, JWT_SECRET);
+
+          if (decoded) {
+            res.locals.user = decoded;
+            if (!roles) return true;
+          }
+
+          return true;
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+      },
+    });
+
+    app.use(router);
+
+    app.listen(5000, () => {
+      console.log(`Server started on http://localhost:5000${apiUrl}`);
+      console.log(`Doc started on http://localhost:5000${docUrl}`);
+    });
+  } catch (error) {
+    console.error(error);
+    process.exit(0);
+  }
+}
+
+main();

@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { getAPIMetadataStorage } from "../metadatas/metadataStorage";
 
-export type ContextType = { req: Request; res: Response };
+export type ContextType = {
+  req: Request;
+  res: Response;
+};
 
 /**
  * @Context {req,res} : ContextType
