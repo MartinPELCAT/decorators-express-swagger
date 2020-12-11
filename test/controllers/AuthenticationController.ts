@@ -20,7 +20,9 @@ import { JWTPayload } from "../helpers/jwt";
 export class AuthenticationController {
   constructor(private authenticationService: AuthenticationService) {}
 
-  @Post("/login", { description: "Route to login a familly" })
+  @Post("/login", () => ProfileObject, {
+    description: "Route to login a familly",
+  })
   async login(
     @Body { email, password, username }: LoginInput
   ): HttpResponse<ProfileObject> {
@@ -40,7 +42,9 @@ export class AuthenticationController {
     return { code: 200, data: { name, photoUrl, _id, token } };
   }
 
-  @Post("/register", { description: "Register a new familly" })
+  @Post("/register", () => FamillyObject, {
+    description: "Register a new familly",
+  })
   async postFamilly(
     @Body
     { email, familyName, password, verifyPassword, username }: RegisterInput
@@ -71,7 +75,7 @@ export class AuthenticationController {
     };
   }
 
-  @Get("/accountInfo", {
+  @Get("/accountInfo", () => Object, {
     description: "Return the account infos according to the token passed",
   })
   @Authorized()

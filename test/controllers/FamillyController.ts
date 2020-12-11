@@ -14,19 +14,25 @@ import { FamillyService } from "../services/FamillyService";
 export class FamillyController {
   constructor(private famillyService: FamillyService) {}
 
-  @Get("/", { description: "Return all families in database" })
+  @Get("/", () => [FamillyObject], {
+    description: "Return all families in database",
+  })
   async getFamillies(): HttpResponse<FamillyObject[]> {
     const families = await this.famillyService.getAllFamillies();
     return { code: 200, data: families };
   }
 
-  @Get("/:id", { description: "Return the familly matching the id" })
+  @Get("/:id", () => FamillyObject, {
+    description: "Return the familly matching the id",
+  })
   async getFamilly(@Param("id") id: string): HttpResponse<FamillyObject> {
     const family = await this.famillyService.getFamillyById(id);
     return { code: 200, data: family };
   }
 
-  @Put("/:id", { description: "Edit the familly matching the id" })
+  @Put("/:id", () => FamillyObject, {
+    description: "Edit the familly matching the id",
+  })
   async putFamilly(
     @Param("id") id: string,
     @Body { email, name }: FamillyInput
@@ -39,7 +45,9 @@ export class FamillyController {
     return { code: 201, data: updatedFamilly };
   }
 
-  @Delete("/:id", { description: "Delete the familly matching the id" })
+  @Delete("/:id", () => FamillyObject, {
+    description: "Delete the familly matching the id",
+  })
   async deleteFamilly(@Param("id") id: string): HttpResponse<FamillyObject> {
     const family = await this.famillyService.deleteFamillyById(id);
     if (!family) return { code: 404, error: "Family not found" };

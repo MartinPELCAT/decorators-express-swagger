@@ -51,7 +51,10 @@ export function endpointParameters(
       return res.json(endpointReturnValue);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server internal error" });
+      if (error.code) {
+        return res.status(error.code).json({ message: error.message });
+      }
+      return res.status(500).json({ message: "Server internal error" });
     }
   };
   return endPointOverride;

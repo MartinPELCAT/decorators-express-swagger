@@ -6,7 +6,11 @@ type RouteOptions = {
   description: string;
 };
 
-export const Get = (path: string, options?: RouteOptions): MethodDecorator => {
+export const Get = (
+  path: string,
+  returnType: () => any,
+  options?: RouteOptions
+): MethodDecorator => {
   return (target, key) => {
     registerRoute(
       {
@@ -15,12 +19,17 @@ export const Get = (path: string, options?: RouteOptions): MethodDecorator => {
         path,
         method: "GET",
       },
+      returnType,
       options
     );
   };
 };
 
-export const Post = (path: string, options?: RouteOptions): MethodDecorator => {
+export const Post = (
+  path: string,
+  returnType: () => any,
+  options?: RouteOptions
+): MethodDecorator => {
   return (target, key) => {
     registerRoute(
       {
@@ -29,12 +38,17 @@ export const Post = (path: string, options?: RouteOptions): MethodDecorator => {
         path,
         method: "POST",
       },
+      returnType,
       options
     );
   };
 };
 
-export const Put = (path: string, options?: RouteOptions): MethodDecorator => {
+export const Put = (
+  path: string,
+  returnType: () => any,
+  options?: RouteOptions
+): MethodDecorator => {
   return (target, key) => {
     registerRoute(
       {
@@ -43,6 +57,7 @@ export const Put = (path: string, options?: RouteOptions): MethodDecorator => {
         path,
         method: "PUT",
       },
+      returnType,
       options
     );
   };
@@ -50,6 +65,7 @@ export const Put = (path: string, options?: RouteOptions): MethodDecorator => {
 
 export const Patch = (
   path: string,
+  returnType: () => any,
   options?: RouteOptions
 ): MethodDecorator => {
   return (target, key) => {
@@ -60,6 +76,7 @@ export const Patch = (
         path,
         method: "PATCH",
       },
+      returnType,
       options
     );
   };
@@ -67,6 +84,7 @@ export const Patch = (
 
 export const Delete = (
   path: string,
+  returnType: () => any,
   options?: RouteOptions
 ): MethodDecorator => {
   return (target, key) => {
@@ -77,6 +95,7 @@ export const Delete = (
         path,
         method: "DELETE",
       },
+      returnType,
       options
     );
   };
@@ -89,6 +108,7 @@ const registerRoute = (
     path,
     method,
   }: Pick<Route, "key" | "target" | "path" | "method">,
+  returnType: () => any,
   options: RouteOptions
 ) => {
   const description = options && options.description ? options.description : "";
@@ -100,4 +120,22 @@ const registerRoute = (
     method,
     description,
   });
+
+  const param = returnType();
+  if (param === null) return;
+
+  const isArray = Array.isArray(param);
+  if (isArray) {
+    getAPIMetadataStorage().addResponseType(
+      { target, key },
+      param[0].name,
+      isArray
+    );
+  } else {
+    getAPIMetadataStorage().addResponseType(
+      { target, key },
+      param.name,
+      isArray
+    );
+  }
 };

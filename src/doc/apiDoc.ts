@@ -40,7 +40,6 @@ export const generateApiDoc = (router: Router, docUrl: string) => {
       const route = apiStorage.controllers
         .find((controller) => controller.target.name === req.params.name)
         .routes.find((route) => route.key === req.params.route);
-
       if (route) {
         res.render(join(__dirname, "./views/route.pug"), {
           route,

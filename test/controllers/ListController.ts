@@ -18,7 +18,9 @@ import { ListService } from "../services/ListService";
 export class ListController {
   constructor(private listService: ListService) {}
 
-  @Get("/", { description: "Return all lists in database" })
+  @Get("/", () => [ListObject], {
+    description: "Return all lists in database",
+  })
   @Authorized()
   async getLists(@Ctx { res }: ContextType): HttpResponse<ListObject[]> {
     const { famillyId } = res.locals.user;
@@ -26,7 +28,9 @@ export class ListController {
     return { code: 200, data: lists };
   }
 
-  @Get("/:id", { description: "Return the list matching the id" })
+  @Get("/:id", () => ListObject, {
+    description: "Return the list matching the id",
+  })
   @Authorized()
   async getList(
     @Param("id") id: string,
@@ -38,7 +42,7 @@ export class ListController {
     return { code: 200, data: list };
   }
 
-  @Post("/", { description: "Create a list" })
+  @Post("/", () => ListObject, { description: "Create a list" })
   @Authorized()
   async postList(
     @Body { name, content, listType }: ListInput,
@@ -58,7 +62,9 @@ export class ListController {
     return { code: 201, data: insertedList };
   }
 
-  @Patch("/:id", { description: "Edit the list matching the id" })
+  @Patch("/:id", () => ListObject, {
+    description: "Edit the list matching the id",
+  })
   @Authorized()
   async putList(
     @Param("id") id: string,
@@ -79,7 +85,9 @@ export class ListController {
     return { code: 201, data: updatedList };
   }
 
-  @Delete("/:id", { description: "Delete the list matching the id" })
+  @Delete("/:id", () => null, {
+    description: "Delete the list matching the id",
+  })
   @Authorized()
   async deleteList(
     @Param("id") id: string,

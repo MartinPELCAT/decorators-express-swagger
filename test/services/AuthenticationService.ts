@@ -1,4 +1,5 @@
 import { Service } from "../../src";
+import { Error404 } from "../../src/types/HttpErrors";
 import Familly from "../entity/Familly";
 import { JWTPayload } from "../helpers/jwt";
 import { comparePassword, hashPassword } from "../helpers/password";
@@ -36,7 +37,7 @@ export class AuthenticationService {
       .select("+profiles.password")
       .exec();
 
-    if (!foundFamilly) return null;
+    if (!foundFamilly) throw new Error404("Familly not found");
 
     const profile = foundFamilly.profiles.find(
       (profile) => profile.name === username
@@ -49,7 +50,7 @@ export class AuthenticationService {
     if (isPasswordValid) {
       return { name, _id, photoUrl, famillyId: foundFamilly._id };
     }
-    return null;
+    throw new Error404("Familly not found");
   }
 
   async getAccountInfo({ name, famillyId }: JWTPayload) {
@@ -62,7 +63,7 @@ export class AuthenticationService {
       },
     });
 
-    if (!foundFamilly) return null;
+    if (!foundFamilly) throw new Error404("Familly not found");
 
     const profile = foundFamilly.profiles.find(
       (profile) => profile.name === name
