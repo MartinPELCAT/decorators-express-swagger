@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { BuildAPI } from "../src";
-import { seedDatabase } from "./utils/databaseSeed";
 import { connect } from "mongoose";
 import { controllers } from "./controllers";
 import cors from "cors";
@@ -20,7 +19,7 @@ async function main() {
     await conn.connection.db.dropDatabase();
 
     console.info("Seeding database ...");
-    await seedDatabase();
+    // await seedDatabase();
 
     const app = express();
 
